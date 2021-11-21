@@ -14,7 +14,7 @@ For each folder you want to customize the icon, write:
 - Relative path of folder of the desired icon
 - File name of the desired icon
 
-Delimited by ",".
+in one line, delimited by `,`.
 
 Example:
 ```
