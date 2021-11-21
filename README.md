@@ -17,8 +17,10 @@ For each folder you want to customize the icon, write:
 Delimited by ",".
 
 Example:
+```
 Course Notes,Pack_01,01.ico
 Doctor/Plan,Pack_01,04.ico
+```
 
 ## Run forceicon.py
 
