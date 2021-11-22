@@ -1,9 +1,5 @@
 import os
 
-# Folder that installed FolderPainter
-FOLDER_FOLDER_PAINTER_ICON = "C:/Program Files/FolderPainter/Icons/"
-FOLDER_GOOGLE_DRIVE = "C:/Users/daich/Google Drive/"
-
 # Folder delimiter: /
 def folderString(*FolderStr):
     first = FolderStr[0]
@@ -19,27 +15,58 @@ def folderString(*FolderStr):
     return first
 
 
-def updateINI():
-    f_icos = open("icos.txt", "r")
-    for ico in f_icos:
-        ico_strip = ico.strip()
-        if len(ico_strip) == 0 or ico_strip[0] in ["#", "%"]:
+FOLDER_TOKENS = ["FOLDER_ICON", "FOLDER_GOOGLE_DRIVE"]
+TOKEN_FOLDER_ICON = 0
+TOKEN_FOLDER_GOOGLE_DRIVE = 1
+
+def readFolderINI():
+    folderINI = [""] * len(FOLDER_TOKENS)
+    f = open("folder.ini", "r")
+    for lineRaw in f:
+        line = processFileLine(lineRaw)
+        if len(line) == 0:
             continue
-        folder, icoFolder, icoFile = ico_strip.split(",")
+        line = line.split("=")
+        tokenInd = FOLDER_TOKENS.index(line[0])
+        if tokenInd >= 0:
+            folderINI[tokenInd] = line[1]
+    f.close()
+    return folderINI
+
+
+def updateINI():
+    folderINI = readFolderINI()
+    f_icos = open("icos.txt", "r")
+    count = 0
+    for icoRaw in f_icos:
+        ico = processFileLine(icoRaw)
+        if len(ico) == 0:
+            continue
+        folder, icoFolder, icoFile = ico.split(",")
          
-        ffolder = folderString(FOLDER_GOOGLE_DRIVE, folder)
+        ffolder = folderString(folderINI[TOKEN_FOLDER_GOOGLE_DRIVE], folder)
         fname = ffolder + "Desktop.ini"
         os.chdir(ffolder)
         if os.path.exists(fname):
             os.system('attrib -h -s Desktop.ini')
         f = open(fname, "w")
         f.write("[.ShellClassInfo]" + '\n')
-        f.write("IconFile=" + folderString(FOLDER_FOLDER_PAINTER_ICON, icoFolder) + icoFile + '\n')
+        f.write("IconFile=" + folderString(folderINI[TOKEN_FOLDER_ICON], icoFolder) + icoFile + '\n')
         f.write("IconIndex=0")
         f.close()
         os.system('attrib +h +s Desktop.ini')
+        count += 1
+    print(str(count) + " custom folder icons applied.")
     f_icos.close()
 
 
+def processFileLine(lineRaw):
+    line = lineRaw.strip()
+    if len(line) == 0:
+        return ""
+    line = line.split("#")[0]
+    line = line.split("%")[0]
+    return line
+    
+
 updateINI()
-input()
