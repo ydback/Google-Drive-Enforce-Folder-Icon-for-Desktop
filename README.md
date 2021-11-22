@@ -4,9 +4,16 @@ This is intended to record the custom folder icon you are using for any folders 
 
 ## Setup
 
-#### Modify forceicon.py:
-FOLDER_FOLDER_PAINTER_ICON: The root directory of your own folder icons. I myself uses Folder Painter's icons, but you can use any folder icons.
-FOLDER_GOOGLE_DRIVE: The root directory of your google drive folder.
+#### Create/Edit folder.ini as below:
+```
+FOLDER_ICON=C:/Program Files/FolderPainter/Icons/
+FOLDER_GOOGLE_DRIVE=C:/Users/myusername/Google Drive/
+```
+
+#### Then edit:
+
+- `FOLDER_ICON`: The root directory of your own folder icons. You can leave it empty/remove this token and always use absolute paths in icos.txt instead.
+- `FOLDER_GOOGLE_DRIVE`: The root directory of your google drive folder.
 
 #### Create/Edit icos.txt in the same folder:
 For each folder you want to customize the icon, write:
@@ -15,8 +22,10 @@ For each folder you want to customize the icon, write:
 - File name of the desired icon
 
 in one line, delimited by `,`.
-Leading and trailing spaces are ignored.
-Empty lines or lines starting with `#` or `%` are ignored.
+
+Leading and trailing spaces are ignored.<br />
+Contents after `#` or `%` in a line are ignored.<br />
+Empty lines are ignored.<br />
 
 Example:
 ```
@@ -24,7 +33,7 @@ Course Notes,Pack_01,01.ico
 
 # My Doctor projects:
 Doctor,Pack_01,04.ico
-Doctor/Project,Pack_01,03.ico
+Doctor/Project,Pack_01,03.ico # Coloured as green for having outstanding items
 Doctor/Plan,Pack_01,04.ico
 ```
 
