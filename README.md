@@ -15,10 +15,16 @@ For each folder you want to customize the icon, write:
 - File name of the desired icon
 
 in one line, delimited by `,`.
+Leading and trailing spaces are ignored.
+Empty lines or lines starting with `#` or `%` are ignored.
 
 Example:
 ```
 Course Notes,Pack_01,01.ico
+
+# My Doctor projects:
+Doctor,Pack_01,04.ico
+Doctor/Project,Pack_01,03.ico
 Doctor/Plan,Pack_01,04.ico
 ```
 

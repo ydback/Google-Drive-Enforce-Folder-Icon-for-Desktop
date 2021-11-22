@@ -22,8 +22,10 @@ def folderString(*FolderStr):
 def updateINI():
     f_icos = open("icos.txt", "r")
     for ico in f_icos:
-        print(ico)
-        folder, icoFolder, icoFile = ico.split(",")
+        ico_strip = ico.strip()
+        if len(ico_strip) == 0 or ico_strip[0] in ["#", "%"]:
+            continue
+        folder, icoFolder, icoFile = ico_strip.split(",")
          
         ffolder = folderString(FOLDER_GOOGLE_DRIVE, folder)
         fname = ffolder + "Desktop.ini"
