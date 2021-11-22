@@ -42,7 +42,7 @@ def updateINI():
         ico = processFileLine(icoRaw)
         if len(ico) == 0:
             continue
-        folder, icoFolder, icoFile = ico.split(",")
+        folder, icoFolder, icoFile = list(map(lambda x: x.strip(), ico.split(",")))
          
         ffolder = folderString(folderINI[TOKEN_FOLDER_GOOGLE_DRIVE], folder)
         fname = ffolder + "Desktop.ini"
