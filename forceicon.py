@@ -1,4 +1,5 @@
 import os
+import codecs
 
 # Folder delimiter: /
 def folderString(*FolderStr):
@@ -21,7 +22,7 @@ TOKEN_FOLDER_GOOGLE_DRIVE = 1
 
 def readFolderINI():
     folderINI = [""] * len(FOLDER_TOKENS)
-    f = open("folder.ini", "r")
+    f = codecs.open("folder.ini", encoding='utf-8', mode="r")
     for lineRaw in f:
         line = processFileLine(lineRaw)
         if len(line) == 0:
@@ -36,7 +37,7 @@ def readFolderINI():
 
 def updateINI():
     folderINI = readFolderINI()
-    f_icos = open("icos.txt", "r")
+    f_icos = codecs.open("icos.txt", encoding='utf-8', mode="r")
     count = 0
     for icoRaw in f_icos:
         ico = processFileLine(icoRaw)
