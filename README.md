@@ -44,3 +44,10 @@ From now on, whenever you want to customize a folder in google drive, edit icos.
 Whenever Google Drive messed up your folder icons again, run forceicon.py.
 
 *Modify as you wish, and run with risk.*
+
+## Resources
+Personally, I use icons from **Folder Painter**.
+
+For editing icons, I use photoshop with this plugin to enable editing icos:
+https://appuals.com/how-to-open-ico-files-in-photoshop-cc/
+
