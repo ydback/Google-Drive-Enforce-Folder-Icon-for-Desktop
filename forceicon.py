@@ -1,5 +1,4 @@
 import os
-import codecs
 
 # Folder delimiter: /
 def folderString(*FolderStr):
@@ -16,58 +15,50 @@ def folderString(*FolderStr):
     return first
 
 
-FOLDER_TOKENS = ["FOLDER_ICON", "FOLDER_GOOGLE_DRIVE"]
-TOKEN_FOLDER_ICON = 0
-TOKEN_FOLDER_GOOGLE_DRIVE = 1
+TOKEN_FOLDER_ICON = "FOLDER_ICON"
+TOKEN_FOLDER_GOOGLE_DRIVE = "FOLDER_GOOGLE_DRIVE"
 
-def readFolderINI():
-    folderINI = [""] * len(FOLDER_TOKENS)
-    f = codecs.open("folder.ini", encoding='utf-8', mode="r")
-    for lineRaw in f:
-        line = processFileLine(lineRaw)
-        if len(line) == 0:
-            continue
-        line = line.split("=")
-        tokenInd = FOLDER_TOKENS.index(line[0])
-        if tokenInd >= 0:
-            folderINI[tokenInd] = line[1]
-    f.close()
-    return folderINI
+
+FILENAME_FOLDER_INI = "folder.ini"
+def read_ini_file(filename):
+    data = {}
+    with open(filename) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                key, value = line.split("=", 1)
+                data[key.strip()] = value.strip()
+    return data
 
 
 def updateINI():
-    folderINI = readFolderINI()
-    f_icos = codecs.open("icos.txt", encoding='utf-8', mode="r")
-    count = 0
-    for icoRaw in f_icos:
-        ico = processFileLine(icoRaw)
-        if len(ico) == 0:
+    folderINI = read_ini_file(FILENAME_FOLDER_INI)
+    f_icos = open("icos.txt", encoding="utf-8")
+    count_success = 0
+    count_fail = 0
+    for line in f_icos:
+        line = line.strip()
+        if not line or line.startswith("#"):
             continue
-        folder, icoFolder, icoFile = list(map(lambda x: x.strip(), ico.split(",")))
+        folder, icoFolder, icoFile = list(map(lambda x: x.strip(), line.split(",")))
          
         ffolder = folderString(folderINI[TOKEN_FOLDER_GOOGLE_DRIVE], folder)
         fname = ffolder + "Desktop.ini"
-        os.chdir(ffolder)
-        if os.path.exists(fname):
-            os.system('attrib -h -s Desktop.ini')
-        f = open(fname, "w")
-        f.write("[.ShellClassInfo]" + '\n')
-        f.write("IconFile=" + folderString(folderINI[TOKEN_FOLDER_ICON], icoFolder) + icoFile + '\n')
-        f.write("IconIndex=0")
-        f.close()
-        os.system('attrib +h +s Desktop.ini')
-        count += 1
-    print(str(count) + " custom folder icons applied.")
+        if os.path.exists(ffolder):
+            os.chdir(ffolder)
+            if os.path.exists("Desktop.ini"):
+                os.system('attrib -h -s Desktop.ini')
+            f = open("Desktop.ini", "w")
+            f.write("[.ShellClassInfo]" + '\n')
+            f.write("IconFile=" + folderString(folderINI[TOKEN_FOLDER_ICON], icoFolder) + icoFile + '\n')
+            f.write("IconIndex=0")
+            f.close()
+            os.system('attrib +h +s Desktop.ini')
+            count_success += 1
+        else:
+            print("Path " + ffolder + " not found.")
+    print(str(count_success) + " custom folder icons applied, " + str(count_fail) + " failed.")
     f_icos.close()
-
-
-def processFileLine(lineRaw):
-    line = lineRaw.strip()
-    if len(line) == 0:
-        return ""
-    line = line.split("#")[0]
-    line = line.split("%")[0]
-    return line
     
 
 updateINI()

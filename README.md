@@ -6,8 +6,8 @@ This is intended to record the custom folder icon you are using for any folders 
 
 #### Create/Edit folder.ini as below:
 ```
-FOLDER_ICON=C:/Program Files/FolderPainter/Icons/
-FOLDER_GOOGLE_DRIVE=C:/Users/myusername/Google Drive/
+FOLDER_ICON=Icons sample/
+FOLDER_GOOGLE_DRIVE=G:/My Drive/
 ```
 
 #### Then edit:
